@@ -1,7 +1,10 @@
-﻿namespace ZUPWebAPI.Models
+﻿using ZUPWebAPI.Services;
+
+namespace ZUPWebAPI.Models
 {
     public class ExpenseListGet
     {
+
         public string Login { get; set; }
         public string Password { get; set; }
 
@@ -10,5 +13,8 @@
             this.Login = login;
             this.Password = password;
         }
+
+//        User user = UserService
+
     }
 }
