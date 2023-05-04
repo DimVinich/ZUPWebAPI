@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using ZUPWebAPI.Models;
+using ZUPWebAPI.Services;
 
 namespace ZUPWebAPI.Controllers
 {
@@ -11,18 +12,25 @@ namespace ZUPWebAPI.Controllers
     {
 
         // поля , свойства класса
+        //protected User user = new User();
+        protected UserService userService = new UserService();
+        protected User user = new User();
+
+        //  Класс сервиса пользователей
 
         //  обработака веб запроса
         [HttpPost]
         public IActionResult Get([FromBody] UserAuthenticationData userAuthenticationData)
         {
-            //    using (IDbConnection db = new SqlConnection(Connection.ConnectionString))
-            //    {
-            //        kontr? new_kon = db.Query<kontr>($"SELECT id_kontr, login_www, pass_www FROM spr_kontr WHERE login_www='{kon.login_www}'").FirstOrDefault();
-            //        if (new_kon == null)
-            //            return NotFound();
-            //        return Json(new_kon);
-            //    }
+
+            //  Проверка аудиентификации
+            user = userService.Authenticate(userAuthenticationData);
+
+            // Если Ок, то для начала отдаём приветствие
+            if(user.Id != 0)
+            {
+
+            }
             return Json(userAuthenticationData);
         }
 
