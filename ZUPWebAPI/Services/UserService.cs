@@ -20,7 +20,7 @@ namespace ZUPWebAPI.Services
 
             var listFindUserEntity = userRepository.UserFindeByLogin(userAuthenticationData.Login);
 
-            if (listFindUserEntity is null)
+            if (listFindUserEntity is null || listFindUserEntity.Count() == 0)
             {
                 //     пользователь с таким логином не найден
                 return user;
@@ -29,6 +29,7 @@ namespace ZUPWebAPI.Services
             if(listFindUserEntity.Count() != 1)
             {
                 // Слишком много пользоветелей с таким логином.
+                user.Id = -1;
                 user.Name = "Путаница пользователей с таким логином. Просьба обатиться с службу поддержки.";
                 return user;
             }
@@ -48,7 +49,7 @@ namespace ZUPWebAPI.Services
             if(userPassMD5 != userAuthenticationData.Password)
             {
                 user.Id = -1;
-                user.Name = "Путаница пользователей с таким логином. Просьба обатиться с службу поддержки.";
+                user.Name = "Не совпадение по имени и паролю.";
                 return user;
             }
 

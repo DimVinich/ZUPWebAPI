@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using ZUPWebAPI.Entities;
 using ZUPWebAPI.Models;
 using ZUPWebAPI.Services;
 
@@ -26,11 +27,14 @@ namespace ZUPWebAPI.Controllers
             //  Проверка аудиентификации
             user = userService.Authenticate(userAuthenticationData);
 
-            // Если Ок, то для начала отдаём приветствие
-            if(user.Id != 0)
+            // Если не ОК, то возвращаем ошибку. 
+            if (user.Id != 0)
             {
-
+                ErrorEntity errorEntity = new ErrorEntity(user.Id, user.Name);
+                return Json(errorEntity);
             }
+
+            //  а если  Ок, пошла обработка дальше и вернём списко статей
             return Json(userAuthenticationData);
         }
 
