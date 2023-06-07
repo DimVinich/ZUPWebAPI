@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using ZUPWebAPI.Entities;
 using ZUPWebAPI.Models;
+using ZUPWebAPI.Repositories;
 using ZUPWebAPI.Services;
 
 namespace ZUPWebAPI.Controllers
@@ -16,6 +17,7 @@ namespace ZUPWebAPI.Controllers
         //protected User user = new User();
         protected UserService userService = new UserService();
         protected User user = new User();
+        protected ExpenseRepository expenseRepository = new ExpenseRepository();
 
         //  Класс сервиса пользователей
 
@@ -28,14 +30,17 @@ namespace ZUPWebAPI.Controllers
             user = userService.Authenticate(userAuthenticationData);
 
             // Если не ОК, то возвращаем ошибку. 
-            if (user.Id != 0)
+            if (user.Id < 1)
             {
                 ErrorEntity errorEntity = new ErrorEntity(user.Id, user.Name);
                 return Json(errorEntity);
             }
 
-            //  а если  Ок, пошла обработка дальше и вернём списко статей
-            return Json(userAuthenticationData);
+            //  а если  Ок, пошла обработка дальше и вернём спискок статей
+            var expenseList = expenseRepository.ExpensesGet();
+            return Json(expenseList);
+
+            //return Json(userAuthenticationData);
 
         }
 
