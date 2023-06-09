@@ -50,11 +50,11 @@ namespace ZUPWebAPI.Repositories
                                                     SELECT CAST(SCOPE_IDENTITY() as int)", unitEntity);
             if (unitID != null)
             {
-                return -1;
+                return unitID.Value; 
             }
             else
             {
-                return unitID.Value;
+                return -1;
             }
         }
     }

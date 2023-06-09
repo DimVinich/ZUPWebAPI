@@ -5,18 +5,22 @@ using ZUPWebAPI.Services;
 
 namespace ZUPWebAPI.Controllers
 {
-
     [Route("api/expense/[controller]")]
     [ApiController]
-    public class UnitItemDeletecontroller : Controller
+    public class UnitChangeController : Controller
     {
         protected UserService userService = new UserService();
         protected User user = new User();
+        protected UserAuthenticationData userAuthenticationData = new UserAuthenticationData();
+        protected MessageEntity messageEntity = new MessageEntity();
+        protected UnitService unitService = new UnitService();
 
         [HttpPost]
-        public IActionResult Get([FromBody] UserAuthenticationData userAuthenticationData)
+        public IActionResult Get([FromBody] UnitChangeData unitChangeData)
         {
             //  Проверка аудиентификации
+            userAuthenticationData.Login = unitChangeData.Login;
+            userAuthenticationData.Password = unitChangeData.Password;
             user = userService.Authenticate(userAuthenticationData);
 
             // Если не ОК, то возвращаем ошибку. 
@@ -26,13 +30,10 @@ namespace ZUPWebAPI.Controllers
                 return Json(errorEntity);
             }
 
-            //  а если  Ок, пошла обработка дальше? ставим пометку на уделаение отдела.
+            //  а если  Ок, пошла обработка дальше. ставим пометку на уделаение отдела.
+            messageEntity = unitService.UnitChange(unitChangeData);
 
-
-            return Json(userAuthenticationData);
-
+            return Json(messageEntity);
         }
-
-
     }
 }

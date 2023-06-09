@@ -35,7 +35,7 @@ namespace ZUPWebAPI.Repositories
 
         private IDbConnection CreateConnection()
         {
-            return new SqlConnection("Server=DBSRV\\DBSRV;Database=TEST;Trusted_Connection=True;Encrypt=no");
+            return new SqlConnection("Server=DBSRV\\DBSRV;Database=CLON;Trusted_Connection=True;Encrypt=no");
             //return new SqlConnection("Server=DESKTOP-QRK8HG8\\SQLEXPRESS;Database=testing;Trusted_Connection=True;Encrypt=no");
         }
 

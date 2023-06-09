@@ -10,7 +10,7 @@ namespace ZUPWebAPI.Controllers
 {
     [Route("api/expense/[controller]")]
     [ApiController]
-    public class ExpenseListGetcontroller : Controller
+    public class ExpenseListGetController : Controller
     {
 
         // поля , свойства класса
