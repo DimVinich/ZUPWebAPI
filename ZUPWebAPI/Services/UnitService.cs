@@ -10,7 +10,7 @@ namespace ZUPWebAPI.Services
 
         public UnitService()
         {
-            //unitRepository = new UnitRepository();  Очень странно, почему пришлось выше выносить, вроде контсруктор должен был отрабоать ...
+            //unitRepository = new UnitRepository();  Очень странно, почему пришлось выше выносить, вроде контсруктор должен был отработать ...
             //MessageEntity messageEntity = new MessageEntity();
             messageEntity.code = -1;
             messageEntity.message = "Произошла не установленная ошибка. Обратитесь в сервис деск.";
