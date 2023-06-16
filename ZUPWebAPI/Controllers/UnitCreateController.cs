@@ -5,7 +5,7 @@ using ZUPWebAPI.Services;
 
 namespace ZUPWebAPI.Controllers
 {
-    [Route("api/expense/[controller]")]
+    [Route("api/unit/[controller]")]
     [ApiController]
     public class UnitCreateController : Controller
     {
