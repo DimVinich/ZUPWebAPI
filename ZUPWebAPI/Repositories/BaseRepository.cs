@@ -6,6 +6,10 @@ namespace ZUPWebAPI.Repositories
 {
     public class BaseRepository
     {
+        protected string connectionString = "Server=DBSRV\\DBSRV;Database=CLON;Trusted_Connection=True;Encrypt=no";
+        // "Server=DBSRV\\DBSRV;Database=CLON;Trusted_Connection=True;Encrypt=no";
+        // "Server=DESKTOP-QRK8HG8\\SQLEXPRESS;Database=testing;Trusted_Connection=True;Encrypt=no"
+
         protected T QueryFirstOrDefault<T>(string sql, object parameters = null)
         {
             using (var connection = CreateConnection())
@@ -35,7 +39,7 @@ namespace ZUPWebAPI.Repositories
 
         private IDbConnection CreateConnection()
         {
-            return new SqlConnection("Server=DBSRV\\DBSRV;Database=CLON;Trusted_Connection=True;Encrypt=no");
+            return new SqlConnection(connectionString);
             //return new SqlConnection("Server=DESKTOP-QRK8HG8\\SQLEXPRESS;Database=testing;Trusted_Connection=True;Encrypt=no");
         }
 
