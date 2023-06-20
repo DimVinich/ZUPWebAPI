@@ -7,18 +7,25 @@ namespace ZUPWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ServiceIsAvailableController : Controller
+    //[Authorize]
+    public class AuthorizeTestController : Controller
     {
         protected MessageEntity messageEntity = new MessageEntity();
         protected ServiceService serviceService = new ServiceService();
 
         // Даже не будем авторизоваться, просто запрос на select count(*) from v_today
         [HttpGet]
-        public IActionResult Get()
+        public IEnumerable<string> Get()
         {
-            messageEntity = serviceService.ServiceIsAvailable();
-            return Json(messageEntity);
+            return new string[] { "value1", "value2" };
         }
+
+        //public IActionResult Get()
+        //{
+        //    messageEntity = serviceService.ServiceIsAvailable();
+        //    return Json(messageEntity);
+        //}
+
 
     }
 }
