@@ -7,7 +7,7 @@ namespace ZUPWebAPI.Controllers
 {
     [Route("api/post/[controller]")]
     [ApiController]
-    public class PostCreateController : Controller
+    public class PostDeleteController : Controller
     {
         protected UserService userService = new UserService();
         protected User user = new User();
@@ -16,12 +16,11 @@ namespace ZUPWebAPI.Controllers
         protected PostService postService = new PostService();
 
         [HttpPost]
-        public IActionResult Get([FromBody] PostChangeData postChangeData)
+        public IActionResult Get([FromBody] PostDeleteData postDeleteData)
         {
-
             //  Проверка аудиентификации
-            userAuthenticationData.Login = postChangeData.Login;
-            userAuthenticationData.Password = postChangeData.Password;
+            userAuthenticationData.Login = postDeleteData.Login;
+            userAuthenticationData.Password = postDeleteData.Password;
             user = userService.Authenticate(userAuthenticationData);
 
             // Если не ОК, то возвращаем ошибку. 
@@ -31,8 +30,8 @@ namespace ZUPWebAPI.Controllers
                 return Json(errorEntity);
             }
 
-            //  а если  Ок, пошла обработка дальше. создаём должность
-            messageEntity = postService.PostCreate(postChangeData);
+            //  Удаление должности
+            messageEntity = postService.PostDelete(postDeleteData.PostId);
             return Json(messageEntity);
 
         }

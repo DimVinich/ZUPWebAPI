@@ -67,7 +67,7 @@ namespace ZUPWebAPI.Services
                 return messageEntity;
             }
 
-            messageEntity.code = countChanging;
+            messageEntity.code = unitEntity.IdUnit;
             messageEntity.message = "Изменение данных по отделу - успешно произведено.";
             return messageEntity;
         }
@@ -93,7 +93,7 @@ namespace ZUPWebAPI.Services
                 return messageEntity;
             }
 
-            messageEntity.code = countDeleted;
+            messageEntity.code = unitId;
             messageEntity.message = "Отдел успешно удалён";
             return messageEntity;
         }

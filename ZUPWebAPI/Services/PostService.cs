@@ -64,17 +64,37 @@ namespace ZUPWebAPI.Services
                 messageEntity.message = "Изменение должности не произошло. Обратитеьс в сервис деск.";
                 return messageEntity;
             }
-            messageEntity.code = numberOfModifed;
+            messageEntity.code = postEntity.IdPost;
             messageEntity.message = "Должность успешно изменена";
             return messageEntity;
         }
 
         //  Удаление должности
-        //public MessageEntity PostDelete(PostEntity postEntity)
-        //{
-        //    int numberOfModifed;
+        public MessageEntity PostDelete(int postId)
+        {
+            int numberOfModifed;
+            try
+            {
+                numberOfModifed = postRepository.PostDelete(postId);
+            }
+            catch (Exception ex)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex.Message;
+                return messageEntity;
+            }
 
-        //}
+            if (numberOfModifed < 1)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = "Удаление должности не произошло. Обратитеьс в сервис деск.";
+                return messageEntity;
+            }
+            messageEntity.code = postId;
+            messageEntity.message = "Должность успешно удалена";
+            return messageEntity;
+
+        }
 
     }
 }

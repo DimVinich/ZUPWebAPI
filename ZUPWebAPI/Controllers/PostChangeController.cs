@@ -7,7 +7,7 @@ namespace ZUPWebAPI.Controllers
 {
     [Route("api/post/[controller]")]
     [ApiController]
-    public class PostCreateController : Controller
+    public class PostChangeController : Controller
     {
         protected UserService userService = new UserService();
         protected User user = new User();
@@ -18,7 +18,6 @@ namespace ZUPWebAPI.Controllers
         [HttpPost]
         public IActionResult Get([FromBody] PostChangeData postChangeData)
         {
-
             //  Проверка аудиентификации
             userAuthenticationData.Login = postChangeData.Login;
             userAuthenticationData.Password = postChangeData.Password;
@@ -30,11 +29,10 @@ namespace ZUPWebAPI.Controllers
                 ErrorEntity errorEntity = new ErrorEntity(user.Id, user.Name);
                 return Json(errorEntity);
             }
-
-            //  а если  Ок, пошла обработка дальше. создаём должность
-            messageEntity = postService.PostCreate(postChangeData);
+            
+            //  Если аутендификация успешана - меняем должность.
+            messageEntity = postService.PostChange(postChangeData);
             return Json(messageEntity);
-
         }
     }
 }
