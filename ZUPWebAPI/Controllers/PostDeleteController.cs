@@ -31,7 +31,7 @@ namespace ZUPWebAPI.Controllers
             }
 
             //  Удаление должности
-            messageEntity = postService.PostDelete(postDeleteData.PostId);
+            messageEntity = postService.PostDelete(postDeleteData.IdPost);
             return Json(messageEntity);
 
         }
