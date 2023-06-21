@@ -13,10 +13,8 @@ namespace ZUPWebAPI.Repositories
 																, idArt
 																, idUnit
 																, id_managment
-																, KolStaffMember
-															)
-														value
-															(	 @NPost
+																, KolStaffMember)
+														values (	 @NPost
 																, @IdExpense
 																, @IdUnit
 																, @IsChief
