@@ -9,10 +9,11 @@
         public string RegisteredAddress { get; set;}
         public string eMail { get; set; }
         public string TIN { get; set; }
-        public int idPost { get; set; }  
-        public int idFirm { get; set; }
+        public int idPost { get; set; }
+        public int idUnit { get; set; }
         public string PassportNumbers { get; set; }
-        public DateTime PassportIssued { get; set; }    
+        public string PassportIssued { get; set; }    
+        public DateTime PassportDate { get; set; }
         public DateTime DateOfEmloyment { get; set; }
     }
 }
