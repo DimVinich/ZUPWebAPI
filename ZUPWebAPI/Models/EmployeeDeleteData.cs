@@ -2,10 +2,10 @@
 
 namespace ZUPWebAPI.Models
 {
-    public class EmployeeDeleteData : EmployeeEntity
+    public class EmployeeDeleteData
     {
         public string Login { get; set; }
         public string Password { get; set; }
-        public int idEmployeer { get; set; }
+        public int IdEmployee { get; set; } 
     }
 }
