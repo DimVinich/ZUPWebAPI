@@ -8,7 +8,13 @@ namespace ZUPWebAPI.Repositories
 		//	возвращает код созданного сотрудника
         public int EmployeeCreate(EmployeeEntity employeeEntity)
         {
-            int? employeeId = QueryFirstOrDefault<int>(@"Insert into spr_kontr (
+            int? employeeId = QueryFirstOrDefault<int>(@" 
+						declare @idNewKontr int;
+						select @idNewKontr = max(id_kontr)
+						from spr_kontr;
+						set @idNewKontr = @idNewKontr + 1;
+
+						Insert into spr_kontr (
 								id_kontr
 								, n_kontr
 								, n_kontr_full
@@ -40,7 +46,7 @@ namespace ZUPWebAPI.Repositories
 								, id_firm	
 								)
 						values (
-								@idEmployee
+								@idNewKontr
 								, @nEmployeeShort
 								, @nEmployee
 								, @nEmployee
@@ -69,7 +75,9 @@ namespace ZUPWebAPI.Repositories
 								, @PassportIssued   -- паспорт кем выдан
 								, @PassportDate -- паспорт когда выдан
 								, 550861
-								)", employeeEntity);
+								);
+							 SELECT @idNewKontr", employeeEntity);
+
             if (employeeId != null)
             {
                 return employeeId.Value;
@@ -122,10 +130,10 @@ namespace ZUPWebAPI.Repositories
 		public int EmployeerDelete(int idEmlpoyeer)
 		{
 			return Execute(@"update spr_kontr
-					set id_cond = 0 
+					set id_cond = 30 
 						, salary_incl = 0
 						, salary_type = 0
-				where spr_kontr.id_kontr = @idEmployeer_p" , new { idEmlpoyeer_p = idEmlpoyeer});
+				where spr_kontr.id_kontr = @idEmployeer_p" , new { idEmployeer_p = idEmlpoyeer});
 		}
 
         //  найти сотрудника по ИНН ??
