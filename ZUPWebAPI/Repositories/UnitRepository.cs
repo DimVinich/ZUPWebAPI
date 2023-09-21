@@ -30,6 +30,7 @@ namespace ZUPWebAPI.Repositories
 		                            , IdLevel = @IdLevel
 		                            , IdTopLevel = @IdTopLevel
 		                            , id_chief = @IdChief
+                                    , idStatus = 0
                             where id_unit = @IdUnit", unitEntity);
         }
 

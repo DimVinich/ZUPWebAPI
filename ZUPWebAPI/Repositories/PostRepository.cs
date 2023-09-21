@@ -40,6 +40,7 @@ namespace ZUPWebAPI.Repositories
 		                            , idUnit = @IdUnit
 		                            , id_managment = @IsChief
 		                            , KolStaffMember = @NumberOfStaffUnits
+                                    , idStatus = 0
                             where id_post = @IdPost", postEntity);
         }
 
