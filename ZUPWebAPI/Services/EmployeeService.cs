@@ -18,6 +18,32 @@ namespace ZUPWebAPI.Services
         public MessageEntity EmployeeCreate(EmployeeEntity employeeEntity)
         {
             int employeeId = -1;
+            // Поискать сотрудника по ИНН, если найден - то изменить его.
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex.Message;
+                return messageEntity;
+            }
+
+            //  Поискать сотрдника по ФИО, если найден - изменить его 
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex.Message;
+                return messageEntity;
+            }
+
+
+            //     Сотрудник не нейден, создаём нового
 
             try
             {
@@ -43,7 +69,7 @@ namespace ZUPWebAPI.Services
 
             try
             {
-                countChanging = employeeRepository.EmployeeCreate(employeeEntity);
+                countChanging = employeeRepository.EmployeerCahnge(employeeEntity);
             }
             catch (Exception ex)
             {
