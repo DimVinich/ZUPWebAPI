@@ -137,8 +137,8 @@ namespace ZUPWebAPI.Repositories
 		}
 
         //  найти сотрудника по ИНН ??
-		//  возвращает список! кодов сотрудников.   Т.к. может быть ситуация, что сотрудников инн "11111" будет несколько
-		public IEnumerable<int> EmloyeerFindeByINN(string iNN)
+		//  возвращает список! кодов сотрудников.   Т.к. может быть ситуация, что сотрудников ИНН "11111" будет несколько
+		public List<int> EmloyeerFindeByINN(string iNN)
 		{
             return Query<int>(@"select id_kontr
 								from spr_kontr with (nolock)
@@ -147,7 +147,7 @@ namespace ZUPWebAPI.Repositories
 
         //  найти сотрудника по фамили и ициниалам. 
         //	возвращает список! кодов сотрудников. т.к. можте быть сируация, что Сидоров.А.А. могу быть два сотрудника.
-        public IEnumerable<int> EmployeerFindeByName (string nEmployeer)
+        public List<int> EmployeerFindeByName (string nEmployeer)
 		{
             return Query<int>(@"select id_kontr
 							from spr_kontr with (nolock)

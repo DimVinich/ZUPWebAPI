@@ -1,4 +1,5 @@
 ﻿using ZUPWebAPI.Entities;
+using ZUPWebAPI.Models;
 using ZUPWebAPI.Repositories;
 
 namespace ZUPWebAPI.Services
@@ -18,10 +19,13 @@ namespace ZUPWebAPI.Services
         public MessageEntity EmployeeCreate(EmployeeEntity employeeEntity)
         {
             int employeeId = -1;
-            // Поискать сотрудника по ИНН, если найден - то изменить его.
+            List<int> employeeFoundIDs = new List<int>();
+            int countChanging = -1;
+
+            // Поискать сотрудника по ИНН
             try
             {
-
+                employeeFoundIDs = employeeRepository.EmloyeerFindeByINN(employeeEntity.TIN);
             }
             catch (Exception ex)
             {
@@ -30,21 +34,82 @@ namespace ZUPWebAPI.Services
                 return messageEntity;
             }
 
-            //  Поискать сотрдника по ФИО, если найден - изменить его 
-            try
+            if (employeeFoundIDs != null)
             {
-
+                if (employeeFoundIDs.Count == 1)
+                {
+                    if (employeeFoundIDs[0] > 0)
+                    {
+                        employeeId = employeeFoundIDs[0];
+                    }
+                }
+                else if (employeeFoundIDs.Count > 1)
+                {
+                    messageEntity.code = -1;
+                    messageEntity.message = "Найденно более одного сотрудника с ИНН: " + employeeEntity.TIN + "/nНеобходимо исправить ошибку в КИС.";
+                    return messageEntity;
+                }
             }
-            catch (Exception ex)
+
+            //  Если сотрудник не найден, поискать сотрдника по ФИО
+            if (employeeId == -1)
             {
-                messageEntity.code = -1;
-                messageEntity.message = ex.Message;
+                try
+                {
+                    employeeFoundIDs = employeeRepository.EmployeerFindeByName(employeeEntity.nEmployeeShort);
+                }
+                catch (Exception ex)
+                {
+                    messageEntity.code = -1;
+                    messageEntity.message = ex.Message;
+                    return messageEntity;
+                }
+                if (employeeFoundIDs != null)
+                {
+                    if (employeeFoundIDs.Count == 1)
+                    {
+                        if (employeeFoundIDs[0] > 0)
+                        {
+                            employeeId = employeeFoundIDs[0];
+                        }
+                    }
+                    else if (employeeFoundIDs.Count > 1)
+                    {
+                        messageEntity.code = -1;
+                        messageEntity.message = "Найденно более одного сотрудника с ИНН: " + employeeEntity.TIN + "/nНеобходимо исправить ошибку в КИС.";
+                        return messageEntity;
+                    }
+                }
+            }
+
+            //     Если сотрудинк был найден, то обновляем инфомрацию по нему.
+            if (employeeId > 1)
+            {
+                try
+                {
+                    employeeEntity.idEmployee = employeeId;
+                    countChanging = employeeRepository.EmployeerCahnge(employeeEntity);
+                }
+                catch (Exception ex)
+                {
+                    messageEntity.code = -1;
+                    messageEntity.message = ex.Message;
+                    return messageEntity;
+                }
+                if (countChanging <= 0)
+                {
+                    messageEntity.code = -1;
+                    messageEntity.message = "Был найден сотрудник с таким ИНН или ФИО, но при обновить информацию по нему не удалось. Обратитесь в сервис деск.";
+                    return messageEntity;
+                }
+
+                messageEntity.code = employeeEntity.idEmployee;
+                messageEntity.message = "Данный сотрудник был найден в КИС, обновление информации по нему успешно произведено.";
                 return messageEntity;
-            }
 
+            }
 
             //     Сотрудник не нейден, создаём нового
-
             try
             {
                 employeeId = employeeRepository.EmployeeCreate(employeeEntity); 
@@ -62,7 +127,7 @@ namespace ZUPWebAPI.Services
 
         }
 
-        //  Изменение сотрудника
+        // ================================== Изменение сотрудника
         public MessageEntity EmployeeChange(EmployeeEntity employeeEntity)
         {
             int countChanging = -1;
