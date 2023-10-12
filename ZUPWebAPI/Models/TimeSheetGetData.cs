@@ -2,7 +2,9 @@
 {
     public class TimeSheetGetData : UserAuthenticationData
     {
-        public int idEmploee { get; set; }
-        public int idPost { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int idEmployee { get; set; }
+        public int idUnit { get; set; }
     }
 }
