@@ -9,6 +9,9 @@ namespace ZUPWebAPI.Services
         EmployeeRepository employeeRepository = new EmployeeRepository();
         MessageEntity messageEntity = new MessageEntity();
 
+        //  Если у сотрудник есть в КИС, смотреть есть ли  не указан имайл, нужно брать из базы.
+        //  Для этого отдельный метод
+
         public EmployeeService()
         {
             messageEntity.code = -1;
@@ -88,6 +91,7 @@ namespace ZUPWebAPI.Services
                 try
                 {
                     employeeEntity.idEmployee = employeeId;
+                    EmployeeCheckMail(employeeEntity);          //      Если проверка, если почта пустая, то забрать с БД
                     countChanging = employeeRepository.EmployeerCahnge(employeeEntity);
                 }
                 catch (Exception ex)
@@ -134,6 +138,7 @@ namespace ZUPWebAPI.Services
 
             try
             {
+                EmployeeCheckMail(employeeEntity);          //      Если проверка, если почта пустая, то забрать с БД
                 countChanging = employeeRepository.EmployeerCahnge(employeeEntity);
             }
             catch (Exception ex)
@@ -180,6 +185,23 @@ namespace ZUPWebAPI.Services
             return messageEntity;
         }
 
-    }
+        //  Наличие мыла у сотрудника, если нет, забор из КИС
+        public int EmployeeCheckMail( EmployeeEntity employeeEntity)
+        {
+            string employeeMail = "";
 
+            //  с регуляными выражениями позже придётся разобраться.
+            //  на данный момент на длину и не пустое.
+            if (employeeEntity.eMail == null || employeeEntity.eMail.Length < 5 )
+            {
+                employeeMail = employeeRepository.EmployeerGetMail(employeeEntity.idEmployee);
+            }
+
+            if (employeeMail != null && employeeMail.Length > 5)
+            {
+                employeeEntity.eMail = employeeMail;
+            }
+            return 1;  //   пока заглушкой, что б потом везде код не переделывать, когда понадобится
+        }
+    }
 }

@@ -153,6 +153,13 @@ namespace ZUPWebAPI.Repositories
 							from spr_kontr with (nolock)
 							where n_kontr = Trim(@nEmployeer_p)", new { nEmployeer_p = nEmployeer }).ToList();
         }
-
+		
+		//	по коду сотрудника возвращает его имайл
+		public string EmployeerGetMail (int employeerId)
+		{
+			return QueryFirstOrDefault<string>(@"select el_mail
+												from spr_kontr with (nolock)
+												where id_kontr = (@idKontr_p)", new { idKontr_p = employeerId });
+        }
     }
 }
