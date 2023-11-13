@@ -18,12 +18,15 @@ namespace ZUPWebAPI.Services
             messageEntity.message = "Произошла не установленная ошибка. Обратитесь в сервис деск.";
         }
 
-        //  Создание нового сотрудника
+        // ================================= Создание нового сотрудника
         public MessageEntity EmployeeCreate(EmployeeEntity employeeEntity)
         {
             int employeeId = -1;
             List<int> employeeFoundIDs = new List<int>();
             int countChanging = -1;
+
+            //  Поменять у сотрудника правильный вид выдачи ЗП. Касс / ЗС
+            employeeEntity = TypeSalaryIssueChange(employeeEntity);
 
             // Поискать сотрудника по ИНН
             try
@@ -116,7 +119,7 @@ namespace ZUPWebAPI.Services
             //     Сотрудник не нейден, создаём нового
             try
             {
-                employeeId = employeeRepository.EmployeeCreate(employeeEntity); 
+                employeeId = employeeRepository.EmployeeCreate(employeeEntity);
             }
             catch (Exception ex)
             {
@@ -128,13 +131,15 @@ namespace ZUPWebAPI.Services
             messageEntity.code = employeeId;
             messageEntity.message = "Сотрудник успешно создан";
             return messageEntity;
-
         }
 
         // ================================== Изменение сотрудника
         public MessageEntity EmployeeChange(EmployeeEntity employeeEntity)
         {
             int countChanging = -1;
+
+            //  Поменять у сотрудника правильный вид выдачи ЗП. Касс / ЗС
+            employeeEntity = TypeSalaryIssueChange(employeeEntity);
 
             try
             {
@@ -159,7 +164,7 @@ namespace ZUPWebAPI.Services
             return messageEntity;
         }
 
-        //  Пометка сотрудника как удалённого
+        //  ================================== Пометка сотрудника как удалённого
         public MessageEntity EmployeeDelete(int employeeId)
         {
             int countDeleted = -1;
@@ -186,13 +191,13 @@ namespace ZUPWebAPI.Services
         }
 
         //  Наличие мыла у сотрудника, если нет, забор из КИС
-        public int EmployeeCheckMail( EmployeeEntity employeeEntity)
+        public int EmployeeCheckMail(EmployeeEntity employeeEntity)
         {
             string employeeMail = "";
 
             //  с регуляными выражениями позже придётся разобраться.
             //  на данный момент на длину и не пустое.
-            if (employeeEntity.eMail == null || employeeEntity.eMail.Length < 5 )
+            if (employeeEntity.eMail == null || employeeEntity.eMail.Length < 5)
             {
                 employeeMail = employeeRepository.EmployeerGetMail(employeeEntity.idEmployee);
             }
@@ -202,6 +207,23 @@ namespace ZUPWebAPI.Services
                 employeeEntity.eMail = employeeMail;
             }
             return 1;  //   пока заглушкой, что б потом везде код не переделывать, когда понадобится
+        }
+
+        //  Изменение вида выдачи ЗП из формата ЗУП в Формат КИС.  Add Sokolov 13-11-2023
+        public EmployeeEntity TypeSalaryIssueChange(EmployeeEntity employeeEntity)
+        {
+            // salary_type = 1 --  1  ЗС, 0 Касса
+
+            if (employeeEntity.TypeSalaryIssue == null) { employeeEntity.TypeSalaryIssue = "1"; }
+            if (employeeEntity.TypeSalaryIssue == "Раздатчик")
+            {
+                employeeEntity.TypeSalaryIssue = "0";
+            }
+            else
+            {
+                employeeEntity.TypeSalaryIssue = "1";
+            }
+            return employeeEntity;
         }
     }
 }

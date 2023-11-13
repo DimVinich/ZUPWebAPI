@@ -69,7 +69,7 @@ namespace ZUPWebAPI.Repositories
 								, 20 -- 20 покупатель
 								, 60
 								, 1 -- 1 выплачивать
-								, 1 --  1  ЗС, 0 Касса
+								, CAST( @TypeSalaryIssue as int ) --  1  ЗС, 0 Касса
 								, @DateOfEmloyment   -- когда начал работать
 								, @PassportNumbers    -- паспорт номер
 								, @PassportIssued   -- паспорт кем выдан
@@ -116,7 +116,7 @@ namespace ZUPWebAPI.Repositories
 								, seller_bayer = 20 -- 20 покупатель
 								, id_direct = 60
 								, salary_incl = 1 -- 1 выплачивать
-								, salary_type = 1 --  1  ЗС, 0 Касса
+								, salary_type = CAST( @TypeSalaryIssue as int ) --  1  ЗС, 0 Касса
 								, last_compare = @DateOfEmloyment   -- когда начал работать
 								, svid_nomer = @PassportNumbers   -- паспорт номер
 								, svid_vidano = @PassportIssued  -- паспорт кем выдан

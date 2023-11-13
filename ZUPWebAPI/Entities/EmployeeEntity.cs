@@ -15,5 +15,6 @@
         public string? PassportIssued { get; set; }    
         public DateTime? PassportDate { get; set; } = DateTime.Now;
         public DateTime? DateOfEmloyment { get; set; } = DateTime.Now;
+        public string? TypeSalaryIssue { get; set; }
     }
 }
