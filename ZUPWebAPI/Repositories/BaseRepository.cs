@@ -6,7 +6,7 @@ namespace ZUPWebAPI.Repositories
 {
     public class BaseRepository
     {
-        protected string connectionString = "Server=DBSRV\\DBSRV;Database=CLON;Trusted_Connection=True;Encrypt=no";
+       protected string connectionString = "Server=DBSRV\\DBSRV;Database=CLON;Trusted_Connection=True;Encrypt=no";
         
         //protected string connectionString =  "Server=DBSRV2;Database=Real;Trusted_Connection=True;Encrypt=no";
         
