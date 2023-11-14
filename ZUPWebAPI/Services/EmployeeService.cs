@@ -215,7 +215,7 @@ namespace ZUPWebAPI.Services
             // salary_type = 1 --  1  ЗС, 0 Касса
 
             if (employeeEntity.TypeSalaryIssue == null) { employeeEntity.TypeSalaryIssue = "1"; }
-            if (employeeEntity.TypeSalaryIssue == "Раздатчик")
+            if (employeeEntity.TypeSalaryIssue == "Раздатчик" || employeeEntity.TypeSalaryIssue == "Касса")
             {
                 employeeEntity.TypeSalaryIssue = "0";
             }
