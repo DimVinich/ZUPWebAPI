@@ -5,9 +5,9 @@ namespace ZUPWebAPI.Repositories
     public class PayrollRepository : BaseRepository
     {
         //  Удаление данных по документу из 1С
-        public int PayrollDelete( string idDocPayRoll ) 
+        public int PayrollDelete( string idDocZUP) 
         {
-            return Execute(@"delete from PayrollFromZUP where PayrollFromZUP.idDocZUP = @idDocZUP", idDocPayRoll);
+            return Execute(@"delete from PayrollFromZUP where PayrollFromZUP.idDocZUP = @idDocZUP_p", idDocZUP);
         }
 
         //  Вставка данных по документу из 1С
