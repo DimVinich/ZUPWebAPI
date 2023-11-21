@@ -28,6 +28,9 @@ namespace ZUPWebAPI.Services
             //  Поменять у сотрудника правильный вид выдачи ЗП. Касс / ЗС
             employeeEntity = TypeSalaryIssueChange(employeeEntity);
 
+            // проверить и преобразовать даты
+            employeeEntity = EmployeeCheckDate(employeeEntity);
+
             // Поискать сотрудника по ИНН
             try
             {
@@ -138,8 +141,19 @@ namespace ZUPWebAPI.Services
         {
             int countChanging = -1;
 
+            //  Если код сотрудника 0 , то идите лесом
+            if (employeeEntity.idEmployee == 0)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = "Изменения по сотрдунику с кодом 0 - не допустимы!";
+                return messageEntity;
+            }
+
             //  Поменять у сотрудника правильный вид выдачи ЗП. Касс / ЗС
             employeeEntity = TypeSalaryIssueChange(employeeEntity);
+
+            // проверить и преобразовать даты
+            employeeEntity = EmployeeCheckDate(employeeEntity);
 
             try
             {
@@ -168,6 +182,15 @@ namespace ZUPWebAPI.Services
         public MessageEntity EmployeeDelete(int employeeId)
         {
             int countDeleted = -1;
+            
+            //  Если код сотрудника 0 , то идите лесом
+            if (employeeId ==0)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = "Изменения по сотрдунику с кодом 0 - не допустимы!";
+                return messageEntity;
+            }
+
             try
             {
                 countDeleted = employeeRepository.EmployeerDelete(employeeId);
@@ -223,6 +246,21 @@ namespace ZUPWebAPI.Services
             {
                 employeeEntity.TypeSalaryIssue = "1";
             }
+            return employeeEntity;
+        }
+
+        //  Проверка, что даты заполнены и если даты начльные формата Шарпа, то преобразуем их к null
+        //          ЗЫ вид начальной даты Шарпа "0001-01-01T00:00:00"
+        public EmployeeEntity EmployeeCheckDate(EmployeeEntity employeeEntity)
+        {
+            //  Дата паспорта
+            if (employeeEntity.PassportDate == DateTime.Parse("0001-01-01T00:00:00")) { employeeEntity.PassportDate = null; }
+            //if (employeeEntity.PassportDate == DateTime.Parse("0001-01-01T00:00:00")) { employeeEntity.PassportDate = DateTime.Parse("1900-01-01T00:00:00"); }
+
+            //  Дата приёма на работу
+            if (employeeEntity.DateOfEmloyment == DateTime.Parse("0001-01-01T00:00:00")) { employeeEntity.DateOfEmloyment = null; }
+            //if (employeeEntity.DateOfEmloyment == DateTime.Parse("0001-01-01T00:00:00")) { employeeEntity.DateOfEmloyment = DateTime.Parse("1900-01-01T00:00:00"); }
+
             return employeeEntity;
         }
     }

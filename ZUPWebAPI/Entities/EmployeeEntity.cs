@@ -12,9 +12,9 @@
         public int idPost { get; set; }
         public int idUnit { get; set; }
         public string? PassportNumbers { get; set; }
-        public string? PassportIssued { get; set; }    
-        public DateTime? PassportDate { get; set; } = DateTime.Now;
-        public DateTime? DateOfEmloyment { get; set; } = DateTime.Now;
+        public string? PassportIssued { get; set; }
+        public DateTime? PassportDate { get; set; } = DateTime.Parse("0001-01-01T00:00:00");
+        public DateTime? DateOfEmloyment { get; set; } = DateTime.Parse("0001-01-01T00:00:00");
         public string? TypeSalaryIssue { get; set; }
     }
 }
