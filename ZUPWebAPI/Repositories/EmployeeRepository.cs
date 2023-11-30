@@ -44,6 +44,7 @@ namespace ZUPWebAPI.Repositories
 								, svid_vidano   -- паспорт кем выдан
 								, sviddate -- паспорт когда выдан
 								, id_firm	
+								, faice   -- f - физическое, предпрениматель
 								)
 						values (
 								@idNewKontr
@@ -75,6 +76,7 @@ namespace ZUPWebAPI.Repositories
 								, @PassportIssued   -- паспорт кем выдан
 								, @PassportDate -- паспорт когда выдан
 								, 550861
+								, 'f'
 								);
 							 SELECT @idNewKontr", employeeEntity);
 
