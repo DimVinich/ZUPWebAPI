@@ -2,7 +2,7 @@
 {
     public class PayrollEntity
     {
-        public string idDocZUP { get; set; }
+        public string? idDocZUP { get; set; }
         public int idEmployee { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }

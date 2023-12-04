@@ -1,4 +1,5 @@
 ﻿using ZUPWebAPI.Entities;
+using ZUPWebAPI.Models;
 using ZUPWebAPI.Repositories;
 
 namespace ZUPWebAPI.Services
@@ -27,6 +28,11 @@ namespace ZUPWebAPI.Services
         //  -----------------------------------------------Удалить данные по документу ЗУП
         public MessageEntity PayrollDel(string idDocZUP)
         {
+            //      И в лог чего либо записыват нужно 
+
+            //     Прежде чем удалять нужно изменить данные по остальным таблицам.
+            //      Payroll, Salary
+
             try
             {
                 messageEntity.code = payrollRepository.PayrollDelete(idDocZUP);
@@ -44,27 +50,30 @@ namespace ZUPWebAPI.Services
         }
 
         // ------------------------------------------------- Запись начислений из переданного с ЗУП
-        public MessageEntity PayrollSet(List<PayrollEntity> payrollList)
+        public MessageEntity PayrollSet(PayrollSetData payrollList)
         {
             //  Выделить из массива JSON с кучей начислений код документа. А нафига брать первый попавщийся
             //  Удалить по документу информацию
             string idDocZup;
-            if (payrollList == null || payrollList.Count < 1)
+            if ( payrollList.payrolls.Count < 1)
             {
                 messageEntity.code = -1;
                 messageEntity.message = "Вы передали пустой список начислений. Никаих действий сделано не было.";
                 return messageEntity;
             }
 
-            idDocZup = payrollList[0].idDocZUP;
+            //  т.к. в Josn из ЗУП код докмумента передаётся только в "шапке", нужно проставить его по всему списку начислений
+            idDocZup = payrollList.idDocZup;
+
             messageEntity = PayrollDel( idDocZup);
             if (messageEntity.code < 1) { return messageEntity; }
 
             //  Вставить записи в базу, через перебор массива и вставку
-            foreach(PayrollEntity payrollEntity in payrollList)
+            foreach(PayrollEntity payrollEntity in payrollList.payrolls)
             {
                 try
                 {
+                    payrollEntity.idDocZUP = idDocZup;
                     messageEntity.code = payrollRepository.PayrollInsert(payrollEntity);
                 }
                 catch (Exception ex)
