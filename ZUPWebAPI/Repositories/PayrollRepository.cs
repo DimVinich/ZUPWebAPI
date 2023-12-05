@@ -25,7 +25,7 @@ namespace ZUPWebAPI.Repositories
 	                                            idEmployee,
 	                                            Year,
 	                                            Month,
-	                                            idTypePayroll,
+	                                            idTypePayrollZUP,
                                                 Amount,
                                                 idStatus
                                             )
