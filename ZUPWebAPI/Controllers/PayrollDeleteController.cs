@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 using ZUPWebAPI.Entities;
 using ZUPWebAPI.Models;
 using ZUPWebAPI.Services;
@@ -8,7 +7,7 @@ namespace ZUPWebAPI.Controllers
 {
     [Route("api/payroll/[controller]")]
     [ApiController]
-    public class PayrollSetController : Controller
+    public class PayrollDeleteController : Controller
     {
         protected User user = new User();
         protected UserService userService = new UserService();
@@ -18,10 +17,10 @@ namespace ZUPWebAPI.Controllers
         protected PayrolleService payrolleService = new PayrolleService();
 
         [HttpPost]
-        public IActionResult Get([FromBody] PayrollSetData payrollZUP)
+        public IActionResult Get([FromBody] PayrollDeleteData payroollDeleteData)
         {
-            userAuthenticationData.Login = payrollZUP.Login;
-            userAuthenticationData.Password = payrollZUP.Password;
+            userAuthenticationData.Login = payroollDeleteData.Login;
+            userAuthenticationData.Password = payroollDeleteData.Password;
             user = userService.Authenticate(userAuthenticationData);
 
             if (user.Id < 1)
@@ -30,9 +29,10 @@ namespace ZUPWebAPI.Controllers
                 messageEntity.message = user.Name;
                 return Json(messageEntity);
             }
-            
-            messageEntity = payrolleService.PayrollSet(payrollZUP);
-            return Json(messageEntity );
+
+            messageEntity = payrolleService.PayrollDel(payroollDeleteData.idDocZup);
+            return Json(messageEntity);
         }
+
     }
 }
