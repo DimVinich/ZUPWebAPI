@@ -8,8 +8,7 @@ namespace ZUPWebAPI.Services
     {
 
         //  ------------------------------------------------- Обработка начислений дальше по ЗП
-        //      т.е. менять данные по таблицам Payroll, Salary и т.д.
-        //      Смешно, но для удаления информации с ЗУП и для проведения нужно будет писать разную обработку.
+        //      т.е. менять данные по таблице Payroll
         //      и да, удаление / добавление информации с ЗУП и обработку дальше по таблицам нужно делать в одной транзацкии
         //      все изменения нужно будет в лог писать.
 
@@ -30,9 +29,7 @@ namespace ZUPWebAPI.Services
         {
             //      И в лог чего либо записыват нужно 
 
-            //     Прежде чем удалять нужно изменить данные по остальным таблицам.
-            //      Payroll, Salary
-
+            //  ставим пометку на удаление
             try
             {
                 messageEntity.code = payrollRepository.PayrollDelete(idDocZUP);
@@ -44,6 +41,18 @@ namespace ZUPWebAPI.Services
                 return messageEntity;
             }
 
+            //  дёргаем обработку записей, помеченных на удаление
+            try
+            {
+                messageEntity.code = payrollRepository.PayrollDeleteProcessing(idDocZUP);
+            }
+            catch (Exception ex2)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex2.Message;
+                return messageEntity;
+            }
+
             messageEntity.code = 1;
             messageEntity.message = "Данные по документу ЗУП успешно удалены.";
             return messageEntity;
@@ -52,8 +61,6 @@ namespace ZUPWebAPI.Services
         // ------------------------------------------------- Запись начислений из переданного с ЗУП
         public MessageEntity PayrollSet(PayrollSetData payrollList)
         {
-            //  Выделить из массива JSON с кучей начислений код документа. А нафига брать первый попавщийся
-            //  Удалить по документу информацию
             string idDocZup;
             if ( payrollList.payrolls.Count < 1)
             {
@@ -65,6 +72,7 @@ namespace ZUPWebAPI.Services
             //  т.к. в Josn из ЗУП код докмумента передаётся только в "шапке", нужно проставить его по всему списку начислений
             idDocZup = payrollList.idDocZup;
 
+            //  Удалить по документу информацию
             messageEntity = PayrollDel( idDocZup);
             if (messageEntity.code < 1) { return messageEntity; }
 
@@ -86,13 +94,21 @@ namespace ZUPWebAPI.Services
 
             //  Запустить процедуру обработки начислений , которую тоже нужно в репозитарий запихать
             //  Похорошему удаление , вставку и обработку нужно в одну транзакцию запускать
+            try
+            {
+                
+                messageEntity.code = payrollRepository.PayrollInserteProcessing(idDocZup);
+            }
+            catch (Exception ex2)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex2.Message;
+                return messageEntity;
+            }
+
             messageEntity.code = 1;
             messageEntity.message = "Данные по документу ЗУП успешно добавлены.";
             return messageEntity;
         }
-
-        
-        
-
     }
 }
