@@ -7,7 +7,7 @@ namespace ZUPWebAPI.Controllers
 {
     [Route("api/unit/[controller]")]
     [ApiController]
-    public class UnitChangeController : Controller
+    public class UnitChangeController : BaseController
     {
         protected UserService userService = new UserService();
         protected User user = new User();

@@ -72,6 +72,13 @@ namespace ZUPWebAPI.Repositories
             return li_H;
         }
 
+        //  Веозвращает 1е число мексяца и года по коду документа из ЗУП
+        public DateTime PayrollGetDate(string idDocZUP)
+        {
+            return QueryFirstOrDefault<DateTime>(@"select distinct DATEFROMPARTS(Year, Month, 1)
+                                                    from PayrollFromZUP 
+                                                    where idDocZUP = @idDocZUP_p", new { @idDocZUP_p = idDocZUP });
+        }
 
     }
 }

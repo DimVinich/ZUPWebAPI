@@ -15,6 +15,7 @@ namespace ZUPWebAPI.Services
         //  класс репозитария
         PayrollRepository payrollRepository = new PayrollRepository();
         MessageEntity messageEntity = new MessageEntity();
+        ServiceService serviceService = new ServiceService();   
 
         //  конструктор, первоначальное заполнение
         public PayrolleService()
@@ -23,11 +24,54 @@ namespace ZUPWebAPI.Services
             messageEntity.message = "Произошла не установленная ошибка. Обратитесь в сервис деск.";
         }
 
-
         //  -----------------------------------------------Удалить данные по документу ЗУП
         public MessageEntity PayrollDel(string idDocZUP)
         {
             //      И в лог чего либо записыват нужно 
+
+            //  проверим за какой период данный документ
+
+            //  получим дату из загруженных данных
+            DateTime? dateDocZUP;
+            try
+            {
+                dateDocZUP = payrollRepository.PayrollGetDate(idDocZUP);
+            }
+            catch (Exception ex)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex.Message;
+                return messageEntity;
+            }
+
+            if(dateDocZUP == null)
+            {
+                //  а нет записей по этому документу стоит ли дальше суетиться ? нет, валим.
+                messageEntity.code = 1;
+                messageEntity.message = "Данных по документу ЗУП не найдено.";
+                return messageEntity;
+            }
+
+            //  получим дату полсе которой периоды доступны для правки
+            DateTime datePeriodAn;
+
+            try
+            {
+                datePeriodAn = serviceService.OptionsNoteGetAsDateTime(50, 487);
+            }
+            catch (Exception ex)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex.Message;
+                return messageEntity;
+            }
+            //  сравним
+            if (dateDocZUP < datePeriodAn)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = "Дата документа " + dateDocZUP.ToString() + " меньше даты открытых периодов "+ datePeriodAn.ToString();
+                return messageEntity;
+            }
 
             //  ставим пометку на удаление
             try
@@ -76,8 +120,36 @@ namespace ZUPWebAPI.Services
             messageEntity = PayrollDel( idDocZup);
             if (messageEntity.code < 1) { return messageEntity; }
 
+            //  Проверить, что период, за который выгружаются данные допступен к корректировке.
+            
+            //  Соберём дату документа ЗУП
+            PayrollEntity payroll;
+            payroll = payrollList.payrolls.FirstOrDefault();
+            DateTime dateDocZUP = new DateTime(payroll.Year , payroll.Month, 1  );
+
+            //  получим дату полсе которой периоды доступны для правки
+            DateTime datePeriodAn;
+
+            try
+            {
+                datePeriodAn = serviceService.OptionsNoteGetAsDateTime(50, 487);
+            }
+            catch (Exception ex)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = ex.Message;
+                return messageEntity;
+            }
+            //  сравним
+            if (dateDocZUP < datePeriodAn)
+            {
+                messageEntity.code = -1;
+                messageEntity.message = "Дата документа " + dateDocZUP.ToString() + " меньше даты открытых периодов " + datePeriodAn.ToString();
+                return messageEntity;
+            }
+
             //  Вставить записи в базу, через перебор массива и вставку
-            foreach(PayrollEntity payrollEntity in payrollList.payrolls)
+            foreach (PayrollEntity payrollEntity in payrollList.payrolls)
             {
                 try
                 {
@@ -110,5 +182,6 @@ namespace ZUPWebAPI.Services
             messageEntity.message = "Данные по документу ЗУП успешно добавлены.";
             return messageEntity;
         }
+
     }
 }

@@ -54,17 +54,17 @@ namespace ZUPWebAPI.Services
         //  Если параметр не найден, или задан не корректно, возвращает текущую дату
         public DateTime OptionsNoteGetAsDateTime(int idApplication, int idParam)
         {
-            string ls_h;
+            string? ls_h;
             DateTime ldt;
             ls_h = OptionsNoteGet(idApplication, idParam);
             if (ls_h == null)
             {
-                ldt = DateTime.Now;
+                ldt = DateTime.Today;
             }
 
             if ( ! DateTime.TryParse(ls_h, out ldt))
             {
-                ldt = DateTime.Now;
+                ldt = DateTime.Today;
             }
 
             return ldt;
