@@ -29,8 +29,8 @@ namespace ZUPWebAPI.Services
         {
             //      И в лог чего либо записыват нужно 
 
-            //  проверим за какой период данный документ
-
+            //  проверим за какой период данный документ   ---------- на данный момент отключено, т.к. требуется доведение. !!!!!!!!!!!
+            /*
             //  получим дату из загруженных данных
             DateTime? dateDocZUP;
             try
@@ -65,14 +65,17 @@ namespace ZUPWebAPI.Services
                 messageEntity.message = ex.Message;
                 return messageEntity;
             }
-            //  сравним
+            
+            //  сравним   
+
             if (dateDocZUP < datePeriodAn)
             {
                 messageEntity.code = -1;
                 messageEntity.message = "Дата документа " + dateDocZUP.ToString() + " меньше даты открытых периодов "+ datePeriodAn.ToString();
                 return messageEntity;
             }
-
+            */
+            
             //  ставим пометку на удаление
             try
             {
@@ -121,7 +124,8 @@ namespace ZUPWebAPI.Services
             if (messageEntity.code < 1) { return messageEntity; }
 
             //  Проверить, что период, за который выгружаются данные допступен к корректировке.
-            
+            //     На данный момент отключено, нужно доводить. !!!!!!!!
+            /*
             //  Соберём дату документа ЗУП
             PayrollEntity payroll;
             payroll = payrollList.payrolls.FirstOrDefault();
@@ -147,6 +151,7 @@ namespace ZUPWebAPI.Services
                 messageEntity.message = "Дата документа " + dateDocZUP.ToString() + " меньше даты открытых периодов " + datePeriodAn.ToString();
                 return messageEntity;
             }
+            */
 
             //  Вставить записи в базу, через перебор массива и вставку
             foreach (PayrollEntity payrollEntity in payrollList.payrolls)
