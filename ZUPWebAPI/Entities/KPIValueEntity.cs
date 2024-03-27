@@ -1,6 +1,6 @@
 ﻿namespace ZUPWebAPI.Entities
 {
-    public class KPIValue
+    public class KPIValueEntity
     {
         public int idEmployee { get; set; }
         public int idKPI { get; set; }
