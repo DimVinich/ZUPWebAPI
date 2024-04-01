@@ -17,7 +17,8 @@ namespace ZUPWebAPI.Repositories
 
 						SELECT 
 						dd.idEmployee as idEmployee,
-						dd.idValue as idKPI,
+					--	dd.idValue as idKPI,
+						491 as idKPI,				-- Код в функциии скуль не корректно задан, поэтому подмена в лоб
 					--	dd.Value as ValuePlan,
 					--	dd2.Value as ValueFact,
 						Cast(Cast( dd2.Value as decimal) / cast(dd.Value as decimal) * 100 as Decimal(5,1) ) as Value
