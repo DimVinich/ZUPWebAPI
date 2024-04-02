@@ -35,7 +35,7 @@ namespace ZUPWebAPI.Repositories
 								, ddh.Value as Value
 								, ddh.yy as yy
 								, ddh.mm as mm
-							from uf_CalcValueSkladEmployee(1, '2024.02.01', '2024.02.29', 0, 0, 1) as ddh
+							from uf_CalcValueSkladEmployee(1, @DateS, @DateE, 0, 0, 1) as ddh
 							where ddh.idValue = 40 
 								and ddh.dd = -3
 							) as dd2 on
