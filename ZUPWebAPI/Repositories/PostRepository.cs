@@ -14,7 +14,7 @@ namespace ZUPWebAPI.Repositories
 																, idUnit
 																, id_managment
 																, KolStaffMember)
-														values (	 @NPost
+														values (	SUBSTRING( @NPost, 1, 99)
 																, @IdExpense
 																, @IdUnit
 																, @IsChief

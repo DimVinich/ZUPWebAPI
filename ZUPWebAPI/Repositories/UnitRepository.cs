@@ -26,7 +26,7 @@ namespace ZUPWebAPI.Repositories
         public int UnitChange(UnitEntity unitEntity)
         {
             return Execute(@"update spr_unit
-	                            set n_unit = @NUnit
+	                            set n_unit = SUBSTRING( @NUnit, 1, 99)
 		                            , IdLevel = @IdLevel
 		                            , IdTopLevel = @IdTopLevel
 		                            , id_chief = @IdChief
