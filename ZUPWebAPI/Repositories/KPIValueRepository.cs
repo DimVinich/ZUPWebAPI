@@ -50,5 +50,18 @@ namespace ZUPWebAPI.Repositories
 					order by dd.idEmployee
                     ", kPIValueGetData).ToList();
         }
+
+		//	Add 22-04-2024 Добавляем ОО. Кол-во обработанных документов.
+		public IEnumerable<KPIValueEntity> KPIValuesDocProcessed( KPIValueGetData kPIValueGetData)
+		{
+            return Query<KPIValueEntity>(@"
+					declare @DateS datetime, @DateE datetime
+					set @DateS = Convert(datetime , Cast( @Year as char(4))+'.'+  Cast( @Month as char(2))+ '.05' )
+					set @DateE = dateAdd(day, -1, dateAdd(month, 1, @DateS))
+						
+                    ", kPIValueGetData).ToList();
+
+        }
+
     }
 }
