@@ -58,7 +58,21 @@ namespace ZUPWebAPI.Repositories
 					declare @DateS datetime, @DateE datetime
 					set @DateS = Convert(datetime , Cast( @Year as char(4))+'.'+  Cast( @Month as char(2))+ '.05' )
 					set @DateE = dateAdd(day, -1, dateAdd(month, 1, @DateS))
-						
+
+					Select
+						idUserKIS as idEmployee
+						, 495 as idKPI
+						, Count(*) as Value
+
+					from LogActionDoc with (nolock)
+					inner join spr_kontr with (nolock) on
+						DateAction between @DateS and @DateE
+						and spr_kontr.id_kontr = LogActionDoc.idUserKIS
+						and ( spr_kontr.id_kontr = @idEmployee or @idEmployee = 0)
+						and ( spr_kontr.id_torg = @idUnit or @idUnit = 0 )
+
+					where nmodule+nAction in ('ПродажиЗакрытие', 'ПродажиКорректировка', 'ЗакупкиЗакрытие', 'ЗакупкиКорректировка')
+					group by idUserKIS
                     ", kPIValueGetData).ToList();
 
         }
