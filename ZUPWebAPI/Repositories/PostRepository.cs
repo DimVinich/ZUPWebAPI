@@ -35,7 +35,7 @@ namespace ZUPWebAPI.Repositories
         public int PostChange(PostEntity postEntity)
         {
             return Execute(@"update spr_post
-	                            set  n_post = @NPost
+	                            set  n_post = SUBSTRING( @NPost, 1, 99)
 		                            , idArt = @IdExpense
 		                            , idUnit = @IdUnit
 		                            , id_managment = @IsChief
