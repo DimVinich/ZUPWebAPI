@@ -54,9 +54,10 @@ namespace ZUPWebAPI.Repositories
 		//	Add 22-04-2024 Добавляем ОО. Кол-во обработанных документов.
 		public IEnumerable<KPIValueEntity> KPIValuesDocProcessed( KPIValueGetData kPIValueGetData)
 		{
+			//Change Sokolov 05-08-2024 Период сделали с 1-го по 31-е, без сдвига
             return Query<KPIValueEntity>(@"
 					declare @DateS datetime, @DateE datetime
-					set @DateS = Convert(datetime , Cast( @Year as char(4))+'.'+  Cast( @Month as char(2))+ '.05' )
+					set @DateS = Convert(datetime , Cast( @Year as char(4))+'.'+  Cast( @Month as char(2))+ '.01' ) --'.05' )
 					set @DateE = dateAdd(day, -1, dateAdd(month, 1, @DateS))
 
 					Select
