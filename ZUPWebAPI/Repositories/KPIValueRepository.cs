@@ -67,7 +67,7 @@ namespace ZUPWebAPI.Repositories
 
 					from LogActionDoc with (nolock)
 					inner join spr_kontr with (nolock) on
-						DateAction between @DateS and @DateE
+						cast(convert(char(16),dateAction,112) as datetime) between @DateS and @DateE
 						and spr_kontr.id_kontr = LogActionDoc.idUserKIS
 						and ( spr_kontr.id_kontr = @idEmployee or @idEmployee = 0)
 						and ( spr_kontr.id_torg = @idUnit or @idUnit = 0 )
