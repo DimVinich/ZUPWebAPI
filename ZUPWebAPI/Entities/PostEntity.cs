@@ -7,6 +7,6 @@
         public int IdExpense { get; set; }
         public int IdUnit { get; set;}
         public int IsChief {get; set; }
-        public int NumberOfStaffUnits { get; set;}
+        public decimal NumberOfStaffUnits { get; set;}
     }
 }
