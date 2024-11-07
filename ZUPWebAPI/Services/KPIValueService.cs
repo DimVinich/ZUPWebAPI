@@ -22,6 +22,9 @@ namespace ZUPWebAPI.Services
             //  ОО 17
             //  Отдел док-ной трансп лог 47
             //  Склад Липецк, там тоже есть должности ОО 41. 46 - тоже пока оставлю, хоть он и записан под удаление.
+            //  Add 07-11-2024 Sokolov Добавлен код нового отдела ТОП Липецк 48.
+
+            //  Нужно менять подход к декодированию начислений. Добавление отделов - требует измения кода здесь. Не правильный подход!
 
             try
             {
@@ -30,7 +33,7 @@ namespace ZUPWebAPI.Services
                     case 2:
                         return kPIValueRepository.KPIValuesSkladVRNGet(kPIValueGetData);
 
-                    case 17 or 47 or 41 or 46:
+                    case 17 or 47 or 41 or 46 or 48:
                         return kPIValueRepository.KPIValuesDocProcessed(kPIValueGetData);
 
                     default:
